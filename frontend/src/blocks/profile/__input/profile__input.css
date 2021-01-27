@@ -1,0 +1,12 @@
+.profile__input {
+  display: flex;
+  margin: 18px 0 25px 30px;
+}
+
+@media screen and (max-width: 1279px) {
+
+  .profile__input {
+    margin: 0 auto 36px;
+    transition-duration: 0.2s;
+  }
+}

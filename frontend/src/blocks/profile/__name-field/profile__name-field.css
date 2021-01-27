@@ -1,0 +1,19 @@
+.profile__name-field {
+  font: normal 500 42px 'Inter', Arial, sans-serif;
+  line-height: 1.33;
+  color: #FFFFFF;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  margin: 0;
+}
+
+@media screen and (max-width: 1279px) {
+
+  .profile__name-field {
+    font-size: 27px;
+    line-height: 2.07;
+    text-align: center;
+    transition-duration: 0.2s;
+  }
+}

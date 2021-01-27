@@ -1,0 +1,12 @@
+@media (max-width: 375px) {
+  .header__menu-line {
+    width: 24px;
+    height: 24px;
+    background: url(../../../images/menu-open.svg) no-repeat center;
+    cursor: pointer;
+  }
+
+  .header__menu-line:hover {
+    opacity: .6;
+  }
+}

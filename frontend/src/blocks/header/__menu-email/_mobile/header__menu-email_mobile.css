@@ -1,0 +1,5 @@
+@media (max-width: 375px) {
+  .header__menu-email_mobile {
+    padding-bottom: 18px;
+  }
+}

@@ -1,0 +1,26 @@
+.profile__add-image {
+  width: 150px;
+  height: 50px;
+  border: 2px solid #FFFFFF;
+  box-sizing: border-box;
+  cursor: pointer;
+  border-radius: 2px;
+  background: center no-repeat #000000 url(../../../images/profile-add.svg);
+  padding: 0;
+  margin-left: auto;
+  margin-top: 35px;
+}
+
+.profile__add-image:hover {
+  opacity: 0.6;
+  transition-duration: 0.5s;
+}
+
+@media screen and (max-width: 1279px) {
+
+  .profile__add-image {
+    width: 282px;
+    margin: 0;
+    transition-duration: 0.2s;
+  }
+}

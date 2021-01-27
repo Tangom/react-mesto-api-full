@@ -1,0 +1,21 @@
+.profile__career-field {
+  font: normal normal 18px 'Inter', Arial, sans-serif;
+  line-height: 1.22;
+  color: #FFFFFF;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  margin: 16px 0 0;
+}
+
+@media screen and (max-width: 1279px) {
+
+  .profile__career-field {
+    font-size: 14px;
+    line-height: 17px;
+    text-align: center;
+    margin: 14px 0 0 24px;
+    transition-duration: 0.2s;
+  }
+}
+

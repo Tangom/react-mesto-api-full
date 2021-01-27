@@ -1,0 +1,10 @@
+.popup__save_dark {
+  color: black;
+  background: white;
+  margin: 218px 0 0;
+  transition: background .3s linear;
+}
+
+.popup__save_dark:hover {
+  background: rgb(204, 204, 204, 0.5);
+}

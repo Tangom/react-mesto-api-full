@@ -1,0 +1,11 @@
+.popup__field_dark{
+  border-bottom: 2px solid #CCCCCC;
+  background: black;
+  outline: none;
+  padding: 0 5px;
+  color: white;
+}
+
+.popup__field_dark::placeholder {
+  color: #CCCCCC;
+}

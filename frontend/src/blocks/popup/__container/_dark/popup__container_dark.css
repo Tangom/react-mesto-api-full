@@ -1,0 +1,7 @@
+.popup__container_dark{
+  position: static;
+  transform: none;
+  margin: 0 auto;
+  padding: 60px 0 140px;
+  background-color: black;
+}

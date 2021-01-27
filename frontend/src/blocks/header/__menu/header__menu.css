@@ -1,0 +1,13 @@
+.header__menu {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  column-gap: 24px;
+  font-size: 18px;
+  line-height: 1.2;
+}
+
+@media (max-width: 1279px) {
+  .header__menu {
+    display: none;
+  }
+}

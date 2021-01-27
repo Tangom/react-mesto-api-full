@@ -1,0 +1,8 @@
+@media (max-width: 375px) {
+  .header__menu-line_opened {
+    width: 24px;
+    height: 24px;
+    background: url(../../../../images/menu-close.svg) no-repeat center;
+    cursor: pointer;
+  }
+}

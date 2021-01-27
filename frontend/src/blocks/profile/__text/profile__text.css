@@ -1,0 +1,13 @@
+.profile__text {
+  max-width: 450px;
+  display: flex;
+  flex-direction: column;
+}
+
+@media screen and (max-width: 1279px) {
+
+  .profile__text {
+    max-width: 260px;
+    transition-duration: 0.2s;
+  }
+}

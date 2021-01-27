@@ -1,0 +1,8 @@
+.element__result {
+  font: normal normal 13px 'Inter', Arial, sans-serif;
+  line-height: 16px;
+  text-align: center;
+  color: #000000;
+  border: none;
+  outline: none;
+}
