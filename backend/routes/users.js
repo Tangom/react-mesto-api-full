@@ -21,7 +21,7 @@ router.patch('/me/avatar', celebrate({
   body: Joi.object().keys({
     avatar: Joi
       .string()
-      .pattern(new RegExp('https?:\\/\\/w{0,3}[a-z0-9-._~:/?#[\\]@!$&\'()*+,;=]{0,}'))
+      .pattern(new RegExp('^(https?:\\/\\/)?([\\da-z.-]+)\\.([a-z.]{2,6})([/\\w\\W.-]*)#?$'))
       .required(),
   }),
 }), updateAvatar);
@@ -33,7 +33,7 @@ router.post('/users',
       name: Joi.string().min(2).max(30),
       about: Joi.string().min(2).max(30),
       avatar: Joi.string()
-        .pattern(new RegExp('^https?:\\/\\/w{0,3}[a-z0-9-._~:/?#[\\]@!$&\'()*+,;=]{0,}')),
+        .pattern(new RegExp('^(https?:\\/\\/)?([\\da-z.-]+)\\.([a-z.]{2,6})([/\\w\\W.-]*)#?$')),
     }),
   }), createUser);
 

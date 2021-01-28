@@ -12,7 +12,7 @@ const cardSchema = new mongoose.Schema({
     required: true,
     validate: {
       validator(v) {
-        return /https?:\/\/w{0,3}[a-z0-9-._~:/?#[\]@!$&'()*+,;=]{0,}/gi.test(v);
+        return /^(https?:\/\/)?([\da-z.-]+)\.([a-z.]{2,6})([/\w\W.-]*)#?$/g.test(v);
       },
       message: 'Неверный url',
     },
