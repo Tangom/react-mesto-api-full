@@ -188,6 +188,14 @@ function App() {
         .catch((err) => console.log(err));
     }
   }
+  
+  // React.useEffect(() => {
+  //   const token = localStorage.getItem('jwt');
+  //
+  //   if (token) {
+  //     handleCheckToken();
+  //   }
+  // }, [handleCheckToken])
 
   React.useEffect(() => {
        handleCheckToken();

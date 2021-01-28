@@ -48,8 +48,8 @@ class Auth {
 }
 
 const auth = new Auth({
-  url: "http://localhost:3000"
-  // url: "https://api.tangom.students.nomoredomains.icu"
+  // url: "http://localhost:3000"
+  url: "https://api.tangom.students.nomoredomains.icu"
 })
 
 export default auth;
