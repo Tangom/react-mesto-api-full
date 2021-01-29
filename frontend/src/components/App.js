@@ -188,7 +188,7 @@ function App() {
         .catch((err) => console.log(err));
     }
   }
-  
+
   // React.useEffect(() => {
   //   const token = localStorage.getItem('jwt');
   //
@@ -199,6 +199,7 @@ function App() {
 
   React.useEffect(() => {
        handleCheckToken();
+       // eslint-disable-next-line
       }, [loggedIn])
 
    return (
