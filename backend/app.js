@@ -46,7 +46,7 @@ app.post('/signup', celebrate({
   }).unknown(true),
 }), createUser);
 
-app.use((err, req, res) => {
+app.use((err, req, res, next) => {
   const { statusCode = 500, message } = err;
   if (err.kind === 'ObjectId') {
     res
@@ -63,6 +63,7 @@ app.use((err, req, res) => {
           : message,
       });
   }
+  next();
 });
 
 app.listen(PORT, () => {
