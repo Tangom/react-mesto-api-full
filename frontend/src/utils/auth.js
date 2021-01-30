@@ -4,7 +4,7 @@ class Auth {
   }
 
    register(email, password) {
-    return fetch(`${this._url}/sign-up`, {
+    return fetch(`${this._url}/signup`, {
       method: 'POST',
       headers: {
         "Content-Type": "application/json",
@@ -28,7 +28,7 @@ class Auth {
    }
 
   authorize(email, password) {
-    return fetch(`${this._url}/sign-in`, {
+    return fetch(`${this._url}/signin`, {
       method: 'POST',
       headers: {
         "Content-Type": "application/json",
