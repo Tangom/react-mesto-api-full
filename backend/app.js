@@ -17,21 +17,29 @@ const { login, createUser } = require('./controllers/users');
 
 const PORT = 3000;
 
-mongoose.connect('mongodb://localhost:27017/mestodb', {
-  useNewUrlParser: true,
-  useCreateIndex: true,
-  useFindAndModify: false,
-});
+const allow = [
+  'http://localhost:3000',
+  'http://localhost:3001',
+  'https://tangom.students.nomoredomains.icu',
+  'https://api.tangom.students.nomoredomains.icu',
+];
 
+// app.use(cors());
+app.use(cors({ origin: allow }));
 app.use(bodyParser.json());
 app.use(requestLogger);
-app.use(cors());
 app.use(errors());
 app.use(errorLogger);
 
 app.use('/', auth, usersRouter);
 app.use('/', auth, cardsRouter);
 app.use('*', pageNotFound);
+
+mongoose.connect('mongodb://localhost:27017/mestodb', {
+  useNewUrlParser: true,
+  useCreateIndex: true,
+  useFindAndModify: false,
+});
 
 app.post('/signin', celebrate({
   body: Joi.object().keys({
