@@ -1,11 +1,10 @@
-
 class Auth {
   constructor(options) {
     this._url = options.url;
   }
 
    register(email, password) {
-    return fetch(`${this._url}/signup`, {
+    return fetch(`${this._url}/sign-up`, {
       method: 'POST',
       headers: {
         "Content-Type": "application/json",
@@ -29,7 +28,7 @@ class Auth {
    }
 
   authorize(email, password) {
-    return fetch(`${this._url}/signin`, {
+    return fetch(`${this._url}/sign-in`, {
       method: 'POST',
       headers: {
         "Content-Type": "application/json",

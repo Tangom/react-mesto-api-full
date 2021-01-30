@@ -9,8 +9,6 @@ const { JWT_SECRET } = process.env;
 
 const login = (req, res, next) => {
   const { email, password } = req.body;
-  console.log(typeof JWT_SECRET);
-
   return User.findUserByCredentials(email, password)
     .then((user) => {
       const token = jwt.sign(
@@ -27,10 +25,10 @@ const login = (req, res, next) => {
     .catch(next);
 };
 
-const getUsers = (req, res) => {
+const getUsers = (req, res, next) => {
   User.find({})
     .then((users) => res.status(200).send(users))
-    .catch(() => res.status(500).send({ message: 'Ошибка сервера' }));
+    .catch(next);
 };
 
 const getUsersId = (req, res, next) => {
@@ -43,7 +41,7 @@ const getUsersId = (req, res, next) => {
     })
     .catch((err) => {
       if (err.name === 'CastError') {
-        return next(new BadRequestError('Переданы неверные данные'));
+        throw new BadRequestError('Переданы неверные данные');
       }
       if (res.status(500).send({ message: 'Ошибка сервера' })) {
         return next(err);
@@ -69,8 +67,7 @@ const createUser = (req, res, next) => {
   const {
     email, password, name, about, avatar,
   } = req.body;
-  bcrypt
-    .hash(password, 10)
+  bcrypt.hash(password, 10)
     .then((hash) => User.create({
       email,
       password: hash,
@@ -78,23 +75,29 @@ const createUser = (req, res, next) => {
       about,
       avatar,
     }))
-    .then((user) => res.status(200).send(user))
-    .catch((err) => {
-      if (err.name === 'ValidationError') {
-        return next(new BadRequestError('Переданы неверные данные'));
-      }
-      return next(err);
-    });
+    .then((user) => res.status(200).send({
+      name: user.name,
+      about: user.about,
+      avatar: user.avatar,
+      _id: user._id,
+      email: user.email,
+    })
+      .catch((err) => {
+        if (err.name === 'ValidationError') {
+          throw new BadRequestError('Переданы неверные данные');
+        }
+        return next(err);
+      }));
 };
 
 const updateProfile = (req, res, next) => {
   const id = req.user._id;
   const { name, about } = req.body;
-  User.findByIdAndUpdate(id, { name, about }, { new: true })
+  User.findByIdAndUpdate(id, { name, about }, { new: true, runValidators: true })
     .then((user) => res.status(200).send(user))
     .catch((err) => {
       if (err.name === 'ValidationError') {
-        return next(new BadRequestError('Переданы неверные данные'));
+        throw new BadRequestError('Переданы неверные данные');
       }
       if (res.status(500).send({ message: 'Ошибка сервера' })) {
         return next(err);
@@ -106,11 +109,11 @@ const updateProfile = (req, res, next) => {
 const updateAvatar = (req, res, next) => {
   const id = req.user._id;
   const { avatar } = req.body;
-  User.findByIdAndUpdate(id, { avatar }, { new: true })
+  User.findByIdAndUpdate(id, { avatar }, { new: true, runValidators: true })
     .then((user) => res.status(200).send(user))
     .catch((err) => {
       if (err.name === 'ValidationError') {
-        return next(new BadRequestError('Переданы неверные данные'));
+        throw new BadRequestError('Переданы неверные данные');
       }
       if (res.status(500).send({ message: 'Ошибка сервера' })) {
         return next(err);

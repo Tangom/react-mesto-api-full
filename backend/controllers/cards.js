@@ -15,7 +15,7 @@ const createCard = (req, res, next) => {
     .then((card) => res.status(200).send(card))
     .catch((err) => {
       if (err.name === 'ValidationError') {
-        return next(new BadRequestError('Переданы неверные данные'));
+        throw new BadRequestError('Переданы неверные данные');
       }
       return next(err);
     });
@@ -32,7 +32,7 @@ const deleteCard = (req, res, next) => {
     })
     .catch((err) => {
       if (err.name === 'CastError') {
-        return next(new BadRequestError('Переданы неверные данные'));
+        throw new BadRequestError('Переданы неверные данные');
       }
       if (err.statusCode === 'Ошибка сервера') {
         return next(err);
@@ -54,7 +54,7 @@ const likeCard = (req, res, next) => {
     })
     .catch((err) => {
       if (err.name === 'CastError') {
-        return next(new BadRequestError('Переданы неверные данные'));
+        throw new BadRequestError('Переданы неверные данные');
       }
       if (res.status(500).send({ message: 'Ошибка сервера' })) {
         return next(err);
@@ -76,7 +76,7 @@ const dislikeCard = (req, res, next) => {
     })
     .catch((err) => {
       if (err.name === 'CastError') {
-        return next(new BadRequestError('Переданы неверные данные'));
+        throw new BadRequestError('Переданы неверные данные');
       }
       if (res.status(500).send({ message: 'Ошибка сервера' })) {
         return next(err);
