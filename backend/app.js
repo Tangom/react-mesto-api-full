@@ -33,7 +33,6 @@ const allow = [
 // app.use(cors());
 app.use(cors({ origin: allow }));
 app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({ extended: true }));
 app.use(requestLogger);
 app.use(errors());
 app.use(errorLogger);
