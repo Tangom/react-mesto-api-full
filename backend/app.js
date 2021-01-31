@@ -5,6 +5,7 @@ const mongoose = require('mongoose');
 const bodyParser = require('body-parser');
 const { celebrate, Joi, errors } = require('celebrate');
 const cors = require('cors');
+const BadRequestError = require('./errors/badRequestError');
 const { requestLogger, errorLogger } = require('./middlewares/logger');
 
 const app = express();
@@ -22,26 +23,6 @@ mongoose.connect('mongodb://localhost:27017/mestodb', {
   useCreateIndex: true,
   useFindAndModify: false,
 });
-
-const allow = [
-  'http://localhost:3000',
-  'http://localhost:3001',
-  'https://tangom.students.nomoredomains.icu',
-  'https://api.tangom.students.nomoredomains.icu',
-];
-
-// app.use(cors());
-app.use(cors({ origin: allow }));
-app.use(bodyParser.json());
-app.use(requestLogger);
-app.use(errors());
-app.use(errorLogger);
-
-app.use('/', usersRouter);
-app.use('/', cardsRouter);
-app.use('*', pageNotFound);
-
-app.use(auth);
 
 app.get('/crash-test', () => {
   setTimeout(() => {
@@ -69,9 +50,7 @@ app.post('/signin', celebrate({
 app.use((err, req, res, next) => {
   const { statusCode = 500, message } = err;
   if (err.kind === 'ObjectId') {
-    res.status(400).send({
-      message: 'Неверно переданы данные',
-    });
+    throw new BadRequestError('Неверно переданы данные');
   } else {
     res.status(statusCode).send({
       message: statusCode === 500 ? 'На сервере произошла ошибка' : message,
@@ -79,6 +58,17 @@ app.use((err, req, res, next) => {
   }
   next();
 });
+
+app.use(bodyParser.json());
+app.use(requestLogger);
+app.use(cors());
+app.use(errorLogger);
+app.use(errors());
+
+app.use('/', auth, usersRouter);
+app.use('/', auth, cardsRouter);
+
+app.use('*', pageNotFound);
 
 app.listen(PORT, () => {
   console.log(`App listening on port ${PORT}`);
