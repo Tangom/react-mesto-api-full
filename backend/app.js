@@ -24,6 +24,10 @@ mongoose.connect('mongodb://localhost:27017/mestodb', {
   useFindAndModify: false,
 });
 
+app.use(bodyParser.json());
+app.use(requestLogger);
+app.use(cors());
+
 app.get('/crash-test', () => {
   setTimeout(() => {
     throw new Error('Сервер сейчас упадёт');
@@ -47,6 +51,13 @@ app.post('/signin', celebrate({
   }),
 }), login);
 
+app.use('/', auth, usersRouter);
+app.use('/', auth, cardsRouter);
+app.use('/', pageNotFound);
+
+app.use(errorLogger);
+app.use(errors());
+
 app.use((err, req, res, next) => {
   const { statusCode = 500, message } = err;
   if (err.kind === 'ObjectId') {
@@ -58,17 +69,6 @@ app.use((err, req, res, next) => {
   }
   next();
 });
-
-app.use(bodyParser.json());
-app.use(requestLogger);
-app.use(cors());
-app.use(errorLogger);
-app.use(errors());
-
-app.use('/', auth, usersRouter);
-app.use('/', auth, cardsRouter);
-
-app.use('*', pageNotFound);
 
 app.listen(PORT, () => {
   console.log(`App listening on port ${PORT}`);
