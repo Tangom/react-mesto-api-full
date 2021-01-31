@@ -30,15 +30,21 @@ app.use(bodyParser.json());
 app.use(requestLogger);
 app.use(errors());
 app.use(errorLogger);
-
-app.use('/', auth, usersRouter);
-app.use('/', auth, cardsRouter);
+app.use(auth);
+app.use('/', usersRouter);
+app.use('/', cardsRouter);
 app.use('*', pageNotFound);
 
 mongoose.connect('mongodb://localhost:27017/mestodb', {
   useNewUrlParser: true,
   useCreateIndex: true,
   useFindAndModify: false,
+});
+
+app.get('/crash-test', () => {
+  setTimeout(() => {
+    throw new Error('Сервер сейчас упадёт');
+  }, 0);
 });
 
 app.post('/signin', celebrate({
@@ -61,19 +67,13 @@ app.post('/signup', celebrate({
 app.use((err, req, res, next) => {
   const { statusCode = 500, message } = err;
   if (err.kind === 'ObjectId') {
-    res
-      .status(400)
-      .send({
-        message: 'Неверно переданы данные',
-      });
+    res.status(400).send({
+      message: 'Неверно переданы данные',
+    });
   } else {
-    res
-      .status(statusCode)
-      .send({
-        message: statusCode === 500
-          ? 'На сервере произошла ошибка'
-          : message,
-      });
+    res.status(statusCode).send({
+      message: statusCode === 500 ? 'На сервере произошла ошибка' : message,
+    });
   }
   next();
 });
