@@ -72,19 +72,21 @@ const createUser = (req, res, next) => {
       about: req.body.about,
       avatar: req.body.avatar,
     }))
-    .then((user) => res.status(200).send({
-      name: user.name,
-      about: user.about,
-      avatar: user.avatar,
-      _id: user._id,
-      email: user.email,
+    .then((user) => {
+      res.status(200).send({
+        name: user.name,
+        about: user.about,
+        avatar: user.avatar,
+        _id: user._id,
+        email: user.email,
+      });
     })
-      .catch((err) => {
-        if (err.name === 'ValidationError') {
-          throw new BadRequestError('Переданы неверные данные');
-        }
-        return next(err);
-      }));
+    .catch((err) => {
+      if (err.name === 'ValidationError') {
+        throw new BadRequestError('Переданы неверные данные');
+      }
+    })
+    .catch(next);
 };
 
 const updateProfile = (req, res, next) => {
