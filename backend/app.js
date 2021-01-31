@@ -17,6 +17,12 @@ const { login, createUser } = require('./controllers/users');
 
 const { PORT = 3000 } = process.env;
 
+mongoose.connect('mongodb://localhost:27017/mestodb', {
+  useNewUrlParser: true,
+  useCreateIndex: true,
+  useFindAndModify: false,
+});
+
 const allow = [
   'http://localhost:3000',
   'http://localhost:3001',
@@ -30,16 +36,12 @@ app.use(bodyParser.json());
 app.use(requestLogger);
 app.use(errors());
 app.use(errorLogger);
-app.use(auth);
-app.use('/', usersRouter);
+
+app.use('/users', usersRouter);
 app.use('/', cardsRouter);
 app.use('*', pageNotFound);
 
-mongoose.connect('mongodb://localhost:27017/mestodb', {
-  useNewUrlParser: true,
-  useCreateIndex: true,
-  useFindAndModify: false,
-});
+app.use(auth);
 
 app.get('/crash-test', () => {
   setTimeout(() => {
