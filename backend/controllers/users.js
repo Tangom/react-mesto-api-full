@@ -5,7 +5,7 @@ const NotFoundError = require('../errors/notFoundError');
 const BadRequestError = require('../errors/badRequestError');
 const NoAuthorizationError = require('../errors/noAuthorizationError');
 
-const { JWT_SECRET } = process.env;
+const { NODE_ENV, JWT_SECRET } = process.env;
 
 const login = (req, res, next) => {
   const { email, password } = req.body;
@@ -13,7 +13,7 @@ const login = (req, res, next) => {
     .then((user) => {
       const token = jwt.sign(
         { _id: user._id },
-        JWT_SECRET,
+        NODE_ENV === 'production' ? JWT_SECRET : 'dev-secret',
         { expiresIn: '7d' },
       );
       res.send({ token });
@@ -64,16 +64,13 @@ const getCurrentUsersId = (req, res, next) => {
 };
 
 const createUser = (req, res, next) => {
-  const {
-    email, password, name, about, avatar,
-  } = req.body;
-  bcrypt.hash(password, 10)
+  bcrypt.hash(req.body.password, 10)
     .then((hash) => User.create({
-      email,
+      email: req.body.email,
       password: hash,
-      name,
-      about,
-      avatar,
+      name: req.body.name,
+      about: req.body.about,
+      avatar: req.body.avatar,
     }))
     .then((user) => res.status(200).send({
       name: user.name,
