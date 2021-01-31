@@ -33,8 +33,7 @@ function App() {
 
   function handleCardLike(card) {
     // Снова проверяем, есть ли уже лайк на этой карточке
-    // eslint-disable-next-line no-undef
-    const isLiked = card.likes.some(i => i._id === currentUser._id);
+    const isLiked = card.likes.some(i => i === currentUser._id);
     // Отправляем запрос в API и получаем обновлённые данные карточки
     api.changeLikeStatus(card, isLiked).then((newCard) => {
       // Формируем новый массив на основе имеющегося, подставляя в него новую карточку
@@ -180,7 +179,7 @@ function App() {
         .checkToken(token)
         .then((res) => {
           if (res) {
-            setEmail(res.data.email);
+            setEmail(res.email);
             setLoggedIn(true);
             history.push("/");
           }
