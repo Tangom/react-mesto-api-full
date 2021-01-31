@@ -1,4 +1,5 @@
 const Card = require('../models/card');
+const User = require('../models/user');
 const BadRequestError = require('../errors/badRequestError');
 const NotFoundError = require('../errors/notFoundError');
 
@@ -43,46 +44,37 @@ const deleteCard = (req, res, next) => {
 
 const likeCard = (req, res, next) => {
   const userId = req.user._id;
-  const id = req.params.cardId;
-  Card.findByIdAndUpdate(id, { $addToSet: { likes: userId } },
-    { new: true })
-    .then((card) => {
-      if (!card) {
-        throw new NotFoundError('Нет данных');
-      }
-      res.status(200).send(card);
+  User.findById(userId)
+    .then((user) => {
+      Card.findByIdAndUpdate(
+        { _id: req.params },
+        { $push: { likes: user } },
+        { new: true },
+      )
+        .then((card) => {
+          res.status(200).send(card);
+        })
+        .catch(next);
     })
-    .catch((err) => {
-      if (err.name === 'CastError') {
-        throw new BadRequestError('Переданы неверные данные');
-      }
-      if (res.status(500).send({ message: 'Ошибка сервера' })) {
-        return next(err);
-      }
-      return next(err);
-    });
+    .catch(next);
 };
 
 const dislikeCard = (req, res, next) => {
   const userId = req.user._id;
-  const id = req.params.cardId;
-  Card.findByIdAndUpdate(id, { $pull: { likes: userId } },
-    { new: true })
-    .then((card) => {
-      if (!card) {
-        throw new NotFoundError('Нет данных');
-      }
-      res.status(200).send(card);
+  User.findById(userId)
+    .then((user) => {
+      Card
+        .findByIdAndUpdate(
+          { _id: req.params },
+          { $pull: { likes: user._id } },
+          { new: true },
+        )
+        .then((card) => {
+          res.status(200).send(card);
+        })
+        .catch(next);
     })
-    .catch((err) => {
-      if (err.name === 'CastError') {
-        throw new BadRequestError('Переданы неверные данные');
-      }
-      if (res.status(500).send({ message: 'Ошибка сервера' })) {
-        return next(err);
-      }
-      return next(err);
-    });
+    .catch(next);
 };
 
 module.exports = {
