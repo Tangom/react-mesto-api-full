@@ -15,7 +15,7 @@ const pageNotFound = require('./routes/pageNotFound');
 const auth = require('./middlewares/auth');
 const { login, createUser } = require('./controllers/users');
 
-const PORT = 3000;
+const { PORT = 3000 } = process.env;
 
 const allow = [
   'http://localhost:3000',
