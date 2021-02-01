@@ -70,7 +70,7 @@ const likeCard = (req, res, next) => {
         { _id: req.params.cardId },
         { $push: { likes: user } },
         { new: true },
-      )
+      ).populate('owner')
         .then((card) => {
           res.status(200).send(card);
         })
