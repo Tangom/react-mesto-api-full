@@ -43,11 +43,8 @@ const getUsersId = (req, res, next) => {
       if (err.name === 'CastError') {
         throw new BadRequestError('Переданы неверные данные');
       }
-      if (res.status(500).send({ message: 'Ошибка сервера' })) {
-        return next(err);
-      }
-      return next(err);
-    });
+    })
+    .catch(next);
 };
 
 const getCurrentUsersId = (req, res, next) => {
@@ -98,11 +95,8 @@ const updateProfile = (req, res, next) => {
       if (err.name === 'ValidationError') {
         throw new BadRequestError('Переданы неверные данные');
       }
-      if (res.status(500).send({ message: 'Ошибка сервера' })) {
-        return next(err);
-      }
-      return next(err);
-    });
+    })
+    .catch(next);
 };
 
 const updateAvatar = (req, res, next) => {
@@ -114,11 +108,8 @@ const updateAvatar = (req, res, next) => {
       if (err.name === 'ValidationError') {
         throw new BadRequestError('Переданы неверные данные');
       }
-      if (res.status(500).send({ message: 'Ошибка сервера' })) {
-        return next(err);
-      }
-      return next(err);
-    });
+    })
+    .catch(next);
 };
 
 module.exports = {
