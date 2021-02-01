@@ -85,8 +85,8 @@
       })
   }
 
-  deleteCard(data) {
-    return fetch(`${this._url}/cards/${data._id}`, {
+  deleteCard(id) {
+    return fetch(`${this._url}/cards/${id}`, {
       method: 'DELETE',
       headers: this.setHeaders(),
     })
@@ -106,8 +106,8 @@
      }
    }
 
-   deleteLike(data) {
-    return fetch(`${this._url}/cards/likes/${data._id}`, {
+   deleteLike(id) {
+    return fetch(`${this._url}/cards/likes/${id}`, {
       method: 'DELETE',
       headers: this.setHeaders(),
     })
@@ -119,8 +119,8 @@
       })
   }
 
-  putLikeCard(data) {
-    return fetch(`${this._url}/cards/likes/${data._id}`, {
+  putLikeCard(id) {
+    return fetch(`${this._url}/cards/likes/${id}`, {
       method: 'PUT',
       headers: this.setHeaders(),
     })
