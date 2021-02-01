@@ -107,7 +107,7 @@
    }
 
    deleteLike(id) {
-    return fetch(`${this._url}/cards/likes/${id}`, {
+    return fetch(`${this._url}/cards/${id}/likes`, {
       method: 'DELETE',
       headers: this.setHeaders(),
     })
@@ -120,7 +120,7 @@
   }
 
   putLikeCard(id) {
-    return fetch(`${this._url}/cards/likes/${id}`, {
+    return fetch(`${this._url}/cards/${id}/likes`, {
       method: 'PUT',
       headers: this.setHeaders(),
     })
