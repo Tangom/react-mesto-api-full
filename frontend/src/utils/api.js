@@ -98,11 +98,11 @@
       })
   }
 
-   changeLikeStatus(data, like) {
+   changeLikeStatus(id, like) {
      if (like) {
-       return this.deleteLike(data);
+       return this.deleteLike(id);
      } else {
-       return this.putLikeCard(data);
+       return this.putLikeCard(id);
      }
    }
 
