@@ -33,11 +33,11 @@ function App() {
 
   function handleCardLike(card) {
     // Снова проверяем, есть ли уже лайк на этой карточке
-    const isLiked = card.likes.some(i => i === currentUser._id);
+    const isLiked = card.likes.some((i) => i === currentUser._id);
     // Отправляем запрос в API и получаем обновлённые данные карточки
-    api.changeLikeStatus(card, isLiked).then((newCard) => {
+    api.changeLikeStatus(card._id, isLiked).then((newCard) => {
       // Формируем новый массив на основе имеющегося, подставляя в него новую карточку
-      const newCards = cards.map((c) => c._id === card._id ? newCard : c);
+      const newCards = cards.map((c) => (c._id === card._id ? newCard : c));
       // Обновляем стейт
       setCards(newCards);
     })
@@ -45,6 +45,7 @@ function App() {
   }
 
   function handleCardDelete(card) {
+    setIsLoading(true);
     api.deleteCard(card)
       .then(() => {
         const newCards = cards.filter((i) => {
@@ -53,7 +54,10 @@ function App() {
         setCards(newCards);
         closeAllPopups();
       })
-      .catch((err) => console.log(err));
+      .catch((err) => console.log(err))
+      .finally(() => {
+        setIsLoading(false);
+      });
   }
 
   React.useEffect(() => {
