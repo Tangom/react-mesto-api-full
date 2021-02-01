@@ -3,10 +3,10 @@ const User = require('../models/user');
 const BadRequestError = require('../errors/badRequestError');
 const NotFoundError = require('../errors/notFoundError');
 
-const getCards = (req, res) => {
+const getCards = (req, res, next) => {
   Card.find({})
     .then((data) => res.status(200).send(data))
-    .catch(() => res.status(500).send({ message: 'Ошибка сервера' }));
+    .catch(next);
 };
 
 const createCard = (req, res, next) => {
@@ -42,42 +42,42 @@ const deleteCard = (req, res, next) => {
     });
 };
 
-const likeCard = (req, res, next) => {
-  const userId = req.user._id;
-  const id = req.params.cardId;
-  Card.findByIdAndUpdate(id, { $addToSet: { likes: userId } },
-    { new: true })
-    .then((card) => {
-      if (!card) {
-        res.status(404).send({ message: 'Нет данных' });
-      }
-      res.status(200).send(card);
-    })
-    .catch((err) => {
-      if (err.name === 'CastError') {
-        res.status(400).send({ message: 'Переданы неверные данные' });
-      }
-      res.status(500).send({ message: 'Ошибка сервера' });
-    })
-    .catch(next);
-};
-
 // const likeCard = (req, res, next) => {
 //   const userId = req.user._id;
-//   User.findById(userId)
-//     .then((user) => {
-//       Card.findByIdAndUpdate(
-//         { _id: req.params },
-//         { $push: { likes: user._id } },
-//         { new: true },
-//       )
-//         .then((card) => {
-//           res.status(200).send(card);
-//         })
-//         .catch(next);
+//   const id = req.params.cardId;
+//   Card.findByIdAndUpdate(id, { $addToSet: { likes: userId } },
+//     { new: true })
+//     .then((card) => {
+//       if (!card) {
+//         res.status(404).send({ message: 'Нет данных' });
+//       }
+//       res.status(200).send(card);
+//     })
+//     .catch((err) => {
+//       if (err.name === 'CastError') {
+//         res.status(400).send({ message: 'Переданы неверные данные' });
+//       }
+//       res.status(500).send({ message: 'Ошибка сервера' });
 //     })
 //     .catch(next);
 // };
+
+const likeCard = (req, res, next) => {
+  const userId = req.user._id;
+  User.findById(userId)
+    .then((user) => {
+      Card.findByIdAndUpdate(
+        { _id: req.params.cardId },
+        { $push: { likes: user } },
+        { new: true },
+      )
+        .then((card) => {
+          res.status(200).send(card);
+        })
+        .catch(next);
+    })
+    .catch(next);
+};
 
 const dislikeCard = (req, res, next) => {
   const userId = req.user._id;
