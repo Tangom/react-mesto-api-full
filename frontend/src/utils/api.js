@@ -85,8 +85,8 @@
       })
   }
 
-  deleteCard(id) {
-    return fetch(`${this._url}/cards/${id}`, {
+  deleteCard(data) {
+    return fetch(`${this._url}/cards/${data._id}`, {
       method: 'DELETE',
       headers: this.setHeaders(),
     })
