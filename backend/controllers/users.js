@@ -57,6 +57,11 @@ const getCurrentUsersId = (req, res, next) => {
       }
       return res.status(200).send(user);
     })
+    .catch((err) => {
+      if (err.name === 'CastError') {
+        throw new BadRequestError('Переданы неверные данные');
+      }
+    })
     .catch(next);
 };
 
@@ -81,6 +86,9 @@ const createUser = (req, res, next) => {
     .catch((err) => {
       if (err.name === 'ValidationError') {
         throw new BadRequestError('Переданы неверные данные');
+      }
+      if (err.code === 11000) {
+        throw new BadRequestError(`Пользователь с email: ${req.body.email} уже существует`);
       }
     })
     .catch(next);
