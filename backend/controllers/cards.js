@@ -34,7 +34,6 @@ const deleteCard = (req, res, next) => {
         throw new ForbiddenError('Нет прав для удаления карточки');
       } else {
         Card.findByIdAndDelete(id)
-          // eslint-disable-next-line no-shadow
           .then((deleted) => {
             res.status(200).send(deleted);
           })
@@ -50,7 +49,7 @@ const likeCard = (req, res, next) => {
     .then((user) => {
       Card.findByIdAndUpdate(
         { _id: req.params.cardId },
-        { $push: { likes: user.id } },
+        { $addToSet: { likes: user.id } },
         { new: true },
       )
         .then((card) => {
