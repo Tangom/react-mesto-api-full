@@ -30,13 +30,13 @@ const deleteCard = (req, res, next) => {
       if (!card) {
         throw new NotFoundError('Нет карточки с таким id');
       }
-      if (card.owner.toString() !== id) {
+      if (card.owner.toString() !== req.user._id) {
         throw new ForbiddenError('Нет прав для удаления карточки');
       } else {
         Card.findByIdAndDelete(id)
           // eslint-disable-next-line no-shadow
-          .then((card) => {
-            res.status(200).send(card);
+          .then((deleted) => {
+            res.status(200).send(deleted);
           })
           .catch(next);
       }
@@ -63,6 +63,7 @@ const likeCard = (req, res, next) => {
           if (err.name === 'CastError') {
             res.status(400).send({ message: 'Переданы неверные данные' });
           }
+          return next(err);
         })
         .catch(next);
     });
@@ -87,6 +88,7 @@ const dislikeCard = (req, res, next) => {
           if (err.name === 'CastError') {
             res.status(400).send({ message: 'Переданы неверные данные' });
           }
+          return next(err);
         })
         .catch(next);
     });

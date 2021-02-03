@@ -63,6 +63,7 @@ const getCurrentUsersId = (req, res, next) => {
       if (err.name === 'CastError') {
         throw new BadRequestError('Переданы неверные данные');
       }
+      return next(err);
     })
     .catch(next);
 };
@@ -92,6 +93,7 @@ const createUser = (req, res, next) => {
       if (err.code === 11000) {
         throw new BadRequestError(`Пользователь с email: ${req.body.email} уже существует`);
       }
+      return next(err);
     })
     .catch(next);
 };
