@@ -25,25 +25,22 @@ const createCard = (req, res, next) => {
 
 const deleteCard = (req, res, next) => {
   const id = req.params.cardId;
-  Card.findByIdAndRemove(id)
+  Card.findById(id)
     .then((card) => {
       if (!card) {
         throw new NotFoundError('Нет карточки с таким id');
       }
       if (card.owner.toString() !== id) {
         throw new ForbiddenError('Нет прав для удаления карточки');
+      } else {
+        Card.findByIdAndDelete(id)
+          .then((deleted) => {
+            res.status(200).send(deleted);
+          })
+          .catch(next);
       }
-      res.status(200).send(card);
     })
-    .catch((err) => {
-      if (err.name === 'CastError') {
-        throw new BadRequestError('Переданы неверные данные');
-      }
-      if (err.statusCode === 'Ошибка сервера') {
-        return next(err);
-      }
-      return next(err);
-    });
+    .catch(next);
 };
 
 const likeCard = (req, res, next) => {

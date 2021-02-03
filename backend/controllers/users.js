@@ -28,6 +28,7 @@ const login = (req, res, next) => {
 const getUsers = (req, res, next) => {
   User.find({})
     .then((users) => res.status(200).send(users))
+
     .catch(next);
 };
 
@@ -43,6 +44,7 @@ const getUsersId = (req, res, next) => {
       if (err.name === 'CastError') {
         throw new BadRequestError('Переданы неверные данные');
       }
+      return next(err);
     })
     .catch(next);
 };
